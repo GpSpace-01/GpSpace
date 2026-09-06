@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://gpspace.gpspace-one.workers.dev/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+<url><loc>https://gpspace.gpspace-one.workers.dev/about.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+<url><loc>https://gpspace.gpspace-one.workers.dev/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+<url><loc>https://gpspace.gpspace-one.workers.dev/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+<url><loc>https://gpspace.gpspace-one.workers.dev/contact.html</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+<url><loc>https://gpspace.gpspace-one.workers.dev/stories.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://gpspace.gpspace-one.workers.dev/stories/black-holes.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://gpspace.gpspace-one.workers.dev/stories/jwst.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://gpspace.gpspace-one.workers.dev/stories/magnetic-field.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://gpspace.gpspace-one.workers.dev/stories/solar-system.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://gpspace.gpspace-one.workers.dev/stories/exoplanets.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://gpspace.gpspace-one.workers.dev/stories/space-weather.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url></urlset>

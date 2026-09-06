@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gpspace.gpspace-one.workers.dev/sitemap.xml

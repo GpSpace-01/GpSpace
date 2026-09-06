@@ -1,0 +1,26 @@
+GpSpace V3 — AdSense setup
+
+This package is prepared for AdSense but does NOT contain a fake publisher ID or active ads.
+
+When Google AdSense approves the site:
+1. In AdSense, add your site and complete verification.
+2. Copy Google's official AdSense code using your own publisher ID.
+3. Add it to the <head> of index.html and any pages where Google instructs you to place it.
+4. Replace the visible ADVERTISEMENT placeholder areas with Google's approved ad units if you choose manual placements, or use Auto ads.
+5. Keep the Privacy Policy and other site information accurate and update them if your data/advertising setup changes.
+
+Important: approval is not guaranteed. Google evaluates the entire site and requires original, useful content and compliance with its policies.
+
+YouTube:
+- Official channel: https://www.youtube.com/@Gp_space
+- Shorts: https://www.youtube.com/@Gp_space/shorts
+
+Custom domain:
+- After purchasing gpspace.world, update canonical/OG/sitemap/robots URLs to https://gpspace.world/ before submitting that domain to Search Console or AdSense.
+
+V4 additions:
+- Original evergreen space/astronomy story pages for stronger site usefulness.
+- Stories index and internal links.
+- Advertisement placeholders are layout-only until an approved ad network code is added.
+- Do NOT paste a fake AdSense publisher ID. After AdSense approval, add the exact code Google provides.
+- Before using a custom domain such as https://gpspace.world/, update canonical, Open Graph, structured-data and sitemap URLs to that domain.
