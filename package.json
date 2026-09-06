@@ -1,0 +1,11 @@
+{
+  "name": "gpspace",
+  "private": true,
+  "version": "7.0.0",
+  "scripts": {
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.68.0"
+  }
+}

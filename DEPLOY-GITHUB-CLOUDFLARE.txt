@@ -1,0 +1,21 @@
+GpSpace V7 — GitHub + Cloudflare Workers Builds
+
+This is a Cloudflare Workers Static Assets project. Do NOT use the basic ZIP/static uploader.
+
+1. Upload ALL files in this folder to the GpSpace GitHub repository.
+2. In Cloudflare: Workers & Pages -> gpspace -> Settings -> Builds -> Connect.
+3. Select the GitHub repository and the production branch (usually main).
+4. Root directory: leave blank if these files are at the repository root.
+5. Build command: leave blank.
+6. Deploy command: npx wrangler deploy
+7. Save/Deploy.
+
+Cloudflare will deploy worker.js + public/ and the /api/youtube endpoint.
+The website remains on the existing workers.dev address.
+
+After deployment test:
+https://gpspace.gpspace-one.workers.dev/api/health
+Then:
+https://gpspace.gpspace-one.workers.dev/api/youtube
+
+Expected /api/health result contains: {"ok":true,"service":"GpSpace YouTube API","version":"7"}
