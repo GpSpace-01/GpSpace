@@ -1,0 +1,14 @@
+GpSpace V8 deployment note
+
+The TypeError "Cannot read properties of undefined (reading 'fetch')" is caused by worker.js reaching:
+    return env.ASSETS.fetch(request);
+when the ASSETS binding is not present in the Cloudflare deployment.
+
+This project requires Cloudflare Workers + Static Assets using wrangler.jsonc.
+Deploy with:
+    npx wrangler deploy
+
+Do not use the basic static ZIP uploader.
+
+After deployment test:
+https://gpspace.gpspace-one.workers.dev/api/health
