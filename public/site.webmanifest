@@ -1,1 +1,1 @@
-{"name":"GpSpace","short_name":"GpSpace","start_url":"/","display":"standalone","background_color":"#030611","theme_color":"#030611","icons":[{"src":"assets/gpspace-logo.png","sizes":"512x512","type":"image/png","purpose":"any"}]}
+{"name":"GpSpace","short_name":"GpSpace","start_url":"/","display":"standalone","background_color":"#030611","theme_color":"#030611","icons":[{"src":"/assets/favicon.png","sizes":"512x512","type":"image/png","purpose":"any"}]}
