@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"GpSpace","url":"https://gpspace.gpspace-one.workers.dev/","logo":"https://gpspace.gpspace-one.workers.dev/assets/gpspace-logo.png","sameAs":["https://www.youtube.com/@Gp_space"]}</script>
 </head>
 <body>
-<header class="nav"><a class="brand" href="#top" aria-label="GpSpace home"><img src="assets/gpspace-logo.png" alt="GpSpace logo"></a><nav><a href="#topics">Topics</a><a href="stories.html">Stories</a><a href="#videos">Videos</a><a href="#about">About</a><a href="#faq">FAQ</a><a class="nav-cta" href="https://www.youtube.com/@Gp_space" target="_blank" rel="noopener">YouTube ↗</a></nav></header>
+<header class="nav"><a class="brand" href="#top" aria-label="GpSpace home"><img src="assets/gpspace-logo.png" alt="GpSpace logo"></a><nav><a href="#topics">Topics</a><a href="stories.html">Stories</a><a href="#live-news">Live News</a><a href="#videos">Videos</a><a href="#about">About</a><a href="#faq">FAQ</a><a class="nav-cta" href="https://www.youtube.com/@Gp_space" target="_blank" rel="noopener">YouTube ↗</a></nav></header>
 <main id="top">
 <section class="hero"><div class="hero-bg" aria-hidden="true"></div><div class="hero-content"><div class="eyebrow">SPACE • ASTRONOMY • SCIENCE</div><img class="hero-logo" src="assets/gpspace-logo.png" alt="GpSpace"><h1>Explore the universe.<br><span>Understand our place in it.</span></h1><p>Space missions, cosmic mysteries, astronomy and the science shaping humanity's future — explained simply and engagingly.</p><div class="actions"><a class="button primary" href="https://www.youtube.com/@Gp_space" target="_blank" rel="noopener">Watch GpSpace on YouTube ↗</a><a class="button ghost" href="#topics">Explore topics ↓</a></div></div><div class="scroll">SCROLL TO EXPLORE ↓</div></section>
 <div class="ad-slot" aria-label="Advertisement"><span>ADVERTISEMENT</span></div>
@@ -30,6 +30,15 @@
 <article class="card"><span class="icon">🔭</span><h3>JWST & Telescopes</h3><p>How modern observatories reveal distant galaxies, exoplanets and the early universe.</p></article>
 <article class="card"><span class="icon">☀️</span><h3>Sun & Space Weather</h3><p>Solar activity, magnetic fields, satellites, auroras and possible impacts on technology.</p></article>
 </div></section>
+<section id="live-news" class="news-section content-section">
+<div class="section-heading">
+  <div><span class="eyebrow">🔴 LIVE • AUTO-UPDATED</span><h2>Latest Space & Science News</h2></div>
+  <div class="news-meta"><span id="newsStatus">Loading latest headlines…</span><button id="newsRefresh" class="refresh-btn" type="button">↻ Refresh</button></div>
+</div>
+<p class="news-intro">Fresh headlines from NASA, ESA and JPL sources, automatically updated through the GpSpace live news feed. Tap a story to read the original report.</p>
+<div id="newsGrid" class="news-grid" aria-live="polite"></div>
+<div class="news-footer"><span>Sources: NASA • ESA • NASA JPL • CNEOS</span><span>Updates automatically</span></div>
+</section>
 <div class="ad-slot" aria-label="Advertisement"><span>ADVERTISEMENT</span></div>
 <section class="content-section"><div class="section-heading"><div><span class="eyebrow">ORIGINAL GUIDES</span><h2>Go deeper than a headline.</h2></div><p>Read clear, evergreen explainers built for curious readers — then continue the story on GpSpace YouTube.</p></div><div class="article-grid"><a class="article-card" href="stories/black-holes.html"><span>🕳️</span><h2>Black Holes Explained</h2><p>Understand event horizons, accretion disks and how astronomers detect black holes.</p></a><a class="article-card" href="stories/jwst.html"><span>🔭</span><h2>How JWST Sees the Early Universe</h2><p>Why infrared observations can reveal galaxies from the young universe.</p></a><a class="article-card" href="stories/space-weather.html"><span>☀️</span><h2>Space Weather</h2><p>Solar flares, CMEs and their effects on modern technology.</p></a></div><div style="margin-top:24px"><a class="button ghost" href="stories.html">View all stories →</a></div></section><section id="videos" class="content-section videos">
 <div class="section-heading"><div><span class="eyebrow">GPSPACE VIDEO HUB</span><h2>Watch GpSpace right here.</h2></div><a class="button ghost" href="https://www.youtube.com/@Gp_space" target="_blank" rel="noopener">Open channel ↗</a></div>
@@ -54,6 +63,6 @@
 <section id="faq" class="faq"><span class="eyebrow">GPSPACE FAQ</span><h2>Frequently asked questions</h2><details><summary>What is GpSpace?</summary><p>GpSpace is a space and astronomy channel focused on explaining science, discoveries, missions and cosmic mysteries in an engaging way for Tamil audiences.</p></details><details><summary>What topics does GpSpace cover?</summary><p>GpSpace covers NASA and space missions, astronomy, planets, stars, galaxies, black holes, telescopes, the Sun, Earth, space technology and the universe.</p></details><details><summary>Where can I watch GpSpace videos?</summary><p>Videos are published on the official GpSpace YouTube channel.</p></details></section>
 </main>
 <footer><div><strong>GpSpace</strong><br><span>Explore • Learn • Inspire</span></div><div class="footer-links"><a href="about.html">About</a><a href="stories.html">Stories</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a><a href="https://www.youtube.com/@Gp_space" target="_blank" rel="noopener">YouTube</a></div><div>© <span id="year"></span> GpSpace</div></footer>
-<script src="script.js"></script><script src="video-hub.js"></script>
+<script src="script.js"></script><script src="news-hub.js"></script><script src="video-hub.js"></script>
 </body></html>
 
