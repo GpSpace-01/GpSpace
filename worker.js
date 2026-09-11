@@ -54,7 +54,7 @@ function json(data, status = 200, maxAge = 300) {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': `public, max-age=${maxAge}, s-maxage=600`,
       'access-control-allow-origin': '*',
-      'x-gpspace-api': 'v9'
+      'x-gpspace-api': 'v11'
     }
   });
 }
@@ -62,7 +62,7 @@ function json(data, status = 200, maxAge = 300) {
 async function youtubeFeed() {
   const upstream = await fetch(FEED_URL, {
     headers: {
-      'user-agent': 'GpSpace/9.0 (+https://gpspace.gpspace-one.workers.dev)',
+      'user-agent': 'GpSpace/11.0 (+https://gpspace.gpspace-one.workers.dev)',
       'accept': 'application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8'
     },
     cf: { cacheTtl: 600, cacheEverything: true }
@@ -82,7 +82,7 @@ async function newsFeed() {
   const results = await Promise.allSettled(NEWS_FEEDS.map(async feed => {
     const response = await fetch(feed.url, {
       headers: {
-        'user-agent': 'GpSpace/9.0 (+https://gpspace.gpspace-one.workers.dev)',
+        'user-agent': 'GpSpace/11.0 (+https://gpspace.gpspace-one.workers.dev)',
         'accept': 'application/rss+xml,application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8'
       },
       cf: { cacheTtl: 600, cacheEverything: true }
@@ -112,19 +112,19 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/health') {
-      return json({ ok: true, service: 'GpSpace API', version: '9', time: new Date().toISOString() }, 200, 60);
+      return json({ ok: true, service: 'GpSpace API', version: '11', time: new Date().toISOString() }, 200, 60);
     }
 
     if (url.pathname === '/api/youtube') {
       try {
         const videos = await youtubeFeed();
         return json({
-          ok: true, version: '9', channelId: CHANNEL_ID,
+          ok: true, version: '11', channelId: CHANNEL_ID,
           channelUrl: 'https://www.youtube.com/@Gp_space',
           fetchedAt: new Date().toISOString(), videos
         });
       } catch (error) {
-        return json({ ok: false, version: '9', error: 'Unable to load YouTube feed' }, 502, 30);
+        return json({ ok: false, version: '11', error: 'Unable to load YouTube feed' }, 502, 30);
       }
     }
 
@@ -132,13 +132,13 @@ export default {
       try {
         const news = await newsFeed();
         return json({
-          ok: true, version: '9',
+          ok: true, version: '11',
           fetchedAt: new Date().toISOString(),
           sources: NEWS_FEEDS.map(f => f.source),
           news
         }, 200, 300);
       } catch (error) {
-        return json({ ok: false, version: '9', error: 'Unable to load news feeds' }, 502, 30);
+        return json({ ok: false, version: '11', error: 'Unable to load news feeds' }, 502, 30);
       }
     }
 
