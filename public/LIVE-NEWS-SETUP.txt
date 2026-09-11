@@ -1,14 +1,21 @@
-GpSpace V9 — Live Space & Science News
+GpSpace Live Space & Science News
 
-The homepage now includes a Live Space & Science News section.
-The Cloudflare Worker endpoint /api/news fetches recent RSS headlines from:
+The Live News section automatically fetches recent headlines from:
 - NASA
 - ESA Space News
 - ESA Space Science
 - NASA JPL
 - NASA CNEOS
 
-The browser refreshes the feed on load and every 10 minutes. The Worker caches upstream feeds for performance.
-Stories display headline, source, relative time, short summary, and a link to the original publisher.
+New presentation:
+1. News title
+2. GpSpace Context
+3. Clickable "Read the full story" box
+4. Expanded conversational GpSpace explanation
+5. Source image when the RSS feed provides one
+6. "To Read the Original Article" link to the publisher
 
-No news article text is copied into GpSpace; users are sent to the original source.
+The story box does not display the word "Tanglish".
+The browser refreshes the feed on load and every 10 minutes.
+The Worker caches upstream feeds for performance.
+No original article page is copied into GpSpace; users can open the publisher's original article.

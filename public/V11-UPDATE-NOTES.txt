@@ -7,3 +7,6 @@ GpSpace V11 — AdSense Preparation Update
 5. Cloudflare Worker API version bumped to v11.
 
 Deploy the contents of the public/ directory using the same Cloudflare Workers + Assets setup used by V10.1.
+
+
+Live News presentation update: title → GpSpace Context → expandable full story box → source image (when supplied) → original article link. The visible story UI does not use the word 'Tanglish'.

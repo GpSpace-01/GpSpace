@@ -30,3 +30,81 @@
 .gpspace-context p{margin:0;color:var(--text)}
 .faq-list details{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.10)}
 .faq-list summary{cursor:pointer;font-weight:700}
+
+/* Live News expandable story update */
+.gpspace-context{
+  margin:14px 0 12px;
+  padding:14px 15px;
+  border:1px solid rgba(255,191,25,.18);
+  border-radius:15px;
+  background:rgba(255,191,25,.045);
+}
+.gpspace-context .context-label{
+  display:block;
+  margin-bottom:7px;
+  color:#ffd05a;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.05em;
+}
+.gpspace-context p{
+  display:block;
+  margin:0;
+  color:#c4ccdc;
+  font-size:13px;
+  line-height:1.55;
+}
+.news-story{
+  margin-top:2px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:15px;
+  overflow:hidden;
+  background:rgba(255,255,255,.025);
+}
+.news-story summary{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:13px 15px;
+  color:#ffd05a;
+  font-size:13px;
+  font-weight:900;
+}
+.news-story summary::-webkit-details-marker{display:none}
+.news-story summary .summary-arrow{
+  font-size:20px;
+  line-height:1;
+  transition:transform .2s ease;
+}
+.news-story[open] summary .summary-arrow{transform:rotate(45deg)}
+.news-story-body{
+  padding:0 15px 16px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.news-story-body p{
+  display:block;
+  margin:14px 0 16px;
+  color:#cbd2df;
+  font-size:14px;
+  line-height:1.7;
+}
+.news-story-image{
+  display:block;
+  width:100%;
+  max-height:230px;
+  object-fit:cover;
+  margin-top:14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.news-story .news-link{
+  display:inline-flex;
+  margin-top:0;
+  padding:11px 14px;
+  border:1px solid rgba(255,191,25,.25);
+  border-radius:10px;
+  background:rgba(255,191,25,.07);
+}
