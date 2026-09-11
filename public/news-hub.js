@@ -1,57 +1,26 @@
 const newsGrid = document.querySelector('#newsGrid');
 const newsStatus = document.querySelector('#newsStatus');
 const newsRefresh = document.querySelector('#newsRefresh');
-
-function newsEscape(value='') {
-  const d = document.createElement('div');
-  d.textContent = value;
-  return d.innerHTML;
+function newsEscape(value='') { const d=document.createElement('div'); d.textContent=value; return d.innerHTML; }
+function relativeNewsTime(value) { const t=Date.parse(value); if(!t) return ''; const mins=Math.max(0,Math.floor((Date.now()-t)/60000)); if(mins<60)return `${mins}m ago`; const hours=Math.floor(mins/60); if(hours<24)return `${hours}h ago`; return `${Math.floor(hours/24)}d ago`; }
+function gpspaceContext(item){
+  const text=((item.title||'')+' '+(item.description||'')).toLowerCase();
+  if(/black hole|black-hole|gravitational wave/.test(text)) return 'Indha update black hole / gravity related-na, simple-aa sonna, scientists space-time-la nadakkura extreme event-a observe panraanga. Black hole itself-ai direct-aa paakradhu difficult; surrounding light, star motion illa gravitational waves moolama evidence kidaikkum. Idhoda main importance enna-na, Einstein gravity predictions-ai real observations-oda compare panna mudiyum.';
+  if(/solar flare|coronal mass|cme|solar storm|aurora|space weather|solar wind/.test(text)) return 'Indha update Sun-oda activity pathi. Solar flare illa CME Earth direction-la varumbodhu, satellites, radio communication, navigation and power infrastructure-ku space-weather effects varalaam. Ground-la atmosphere namma protect pannudhu; aana modern technology-ku monitoring romba important.';
+  if(/asteroid|meteor|meteoroid|comet|near-earth/.test(text)) return 'Indha update oru small Solar System object pathi. Scientists first object-oda orbit, size, speed and Earth-kku distance-a calculate pannuvaanga. “Close approach” nu sonna Earth-ai hit pannum-nu meaning illa; adhu astronomical distance-la relatively close-aa pass aagudhu-nu artham.';
+  if(/moon|lunar/.test(text)) return 'Indha Moon update-oda simple meaning: namma satellite-ai orbit, surface, geology illa future exploration angle-la scientists study panraanga. Oru mission result vandhaalum, adhu immediately Moon pathi ellaa questions-kum answer kudukkadhu; each measurement next research-ku new clue kudukkum.';
+  if(/mars|red planet|perseverance|curiosity/.test(text)) return 'Mars update-na, scientists ancient water, rocks, atmosphere, habitability and future exploration clues-a search panraanga. Oru rock sample illa image useful-aa irukkardhu, Mars past environment epdi irundhuchu-nu reconstruct panna help pannum.';
+  if(/james webb|jwst|telescope|galaxy|exoplanet|star formation|nebula/.test(text)) return 'Indha astronomy update-oda key point observation. Telescope light-ai collect panni, brightness, spectrum, temperature, motion and chemical fingerprints madhiri information-a extract pannum. Distant object-ai paakumbodhu, light travel time nala adhu past-la epdi irundhuchu-nu namma observe panrom.';
+  if(/earth|magnetic|climate|atmosphere|geology/.test(text)) return 'Indha update Earth science related. Space-la nadakkura event-a Earth environment-oda connect panni paakanum: atmosphere, magnetic field, oceans and surface processes ellam separate systems maadhiri therinjaalum, long-term-aa interconnected. Scientific measurement dhaan exact impact-a determine panna help pannum.';
+  return 'Indha update-la headline mattum paatha full meaning puriyama irukkalaam. GpSpace perspective-la, original report-la irukkura observation, measurement and uncertainty-a separate-aa paakanum. New space-science result-na usually “discovery complete” nu illa; scientists-ku next question-ai answer panna oru new piece of evidence.';
 }
-function relativeNewsTime(value) {
-  const t = Date.parse(value);
-  if (!t) return '';
-  const mins = Math.max(0, Math.floor((Date.now() - t) / 60000));
-  if (mins < 60) return `${mins}m ago`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+function renderNews(items){
+  if(!items.length){newsGrid.innerHTML='<div class="news-empty">No live headlines are available right now. Please try again shortly.</div>';return;}
+  newsGrid.innerHTML=items.map(item=>`<article class="news-card"><div class="news-top"><span class="news-source">${newsEscape(item.source||'Space Science')}</span><span class="news-time">${newsEscape(relativeNewsTime(item.published))}</span></div><h3>${newsEscape(item.title)}</h3><p>${newsEscape(item.description||'Read the original report for the latest details.')}</p><div class="gpspace-context"><span class="context-label">🧠 GpSpace Context • Tanglish</span><p>${newsEscape(gpspaceContext(item))}</p></div><a class="news-link" href="${encodeURI(item.link)}" target="_blank" rel="noopener noreferrer">Read original story ↗</a></article>`).join('');
 }
-function renderNews(items) {
-  if (!items.length) {
-    newsGrid.innerHTML = '<div class="news-empty">No live headlines are available right now. Please try again shortly.</div>';
-    return;
-  }
-  newsGrid.innerHTML = items.map(item => `
-    <article class="news-card">
-      <div class="news-top">
-        <span class="news-source">${newsEscape(item.source || 'Space Science')}</span>
-        <span class="news-time">${newsEscape(relativeNewsTime(item.published))}</span>
-      </div>
-      <h3>${newsEscape(item.title)}</h3>
-      <p>${newsEscape(item.description || 'Read the original report for the latest details.')}</p>
-      <a class="news-link" href="${encodeURI(item.link)}" target="_blank" rel="noopener noreferrer">Read original story ↗</a>
-    </article>
-  `).join('');
+async function loadNews(){
+ if(!newsGrid)return; newsGrid.innerHTML='<div class="news-loading">Loading the latest space & science headlines…</div>'; if(newsStatus)newsStatus.textContent='Updating…';
+ try{const response=await fetch('/api/news',{cache:'no-store'});const data=await response.json();if(!response.ok||!data.ok)throw new Error('News feed unavailable');renderNews(data.news||[]);if(newsStatus){const time=new Date(data.fetchedAt);newsStatus.textContent=`Updated ${time.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;}}
+ catch(error){newsGrid.innerHTML='<div class="news-empty">Live news is temporarily unavailable. Please try again in a few minutes.</div>';if(newsStatus)newsStatus.textContent='Feed temporarily unavailable';}
 }
-async function loadNews() {
-  if (!newsGrid) return;
-  newsGrid.innerHTML = '<div class="news-loading">Loading the latest space & science headlines…</div>';
-  if (newsStatus) newsStatus.textContent = 'Updating…';
-  try {
-    const response = await fetch('/api/news', { cache: 'no-store' });
-    const data = await response.json();
-    if (!response.ok || !data.ok) throw new Error('News feed unavailable');
-    renderNews(data.news || []);
-    if (newsStatus) {
-      const time = new Date(data.fetchedAt);
-      newsStatus.textContent = `Updated ${time.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
-    }
-  } catch (error) {
-    newsGrid.innerHTML = '<div class="news-empty">Live news is temporarily unavailable. Please try again in a few minutes.</div>';
-    if (newsStatus) newsStatus.textContent = 'Feed temporarily unavailable';
-  }
-}
-if (newsRefresh) newsRefresh.addEventListener('click', loadNews);
-loadNews();
-setInterval(loadNews, 10 * 60 * 1000);
+if(newsRefresh)newsRefresh.addEventListener('click',loadNews);loadNews();setInterval(loadNews,10*60*1000);

@@ -1,0 +1,9 @@
+GpSpace V11 — AdSense Preparation Update
+
+1. Stories: expanded the existing evergreen story pages into substantially deeper explainers with multiple sections and FAQs.
+2. Privacy: upgraded for Google AdSense/advertising cookies, third-party advertising, consent, analytics, external services and user choices.
+3. Contact: added gpspace.one@gmail.com.
+4. Live News: current external headlines remain linked to their original sources; each item now includes a GpSpace Context section in Tanglish generated from the topic category, explaining the scientific meaning and why it matters.
+5. Cloudflare Worker API version bumped to v11.
+
+Deploy the contents of the public/ directory using the same Cloudflare Workers + Assets setup used by V10.1.
