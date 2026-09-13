@@ -24,7 +24,7 @@ function setFeatured(v){player.src='https://www.youtube.com/embed/'+v.id+'?rel=0
 function render(filter='all'){grid.innerHTML='';const list=records.filter(v=>filter==='all'||v.type===filter||v.categories.includes(filter));if(!list.length){grid.innerHTML='<div class="loading-card">No videos found in this category yet.</div>';return}list.forEach(v=>{const card=document.createElement('article');card.className='yt-card';card.innerHTML='<a href="#videos" class="yt-thumb"><img loading="lazy" src="'+thumb(v.id)+'" alt="'+v.title.replace(/"/g,'&quot;')+'"><span class="yt-badge">'+(v.type==='shorts'?'SHORT':'VIDEO')+'</span><span class="yt-play">▶</span></a><div class="yt-body"><h3>'+v.title+'</h3><p>'+labelFor(v.categories[0])+'</p></div>';card.querySelector('.yt-thumb').addEventListener('click',e=>{e.preventDefault();setFeatured(v)});grid.appendChild(card)})}
 async function loadAutomaticFeed(){
   try {
-    const response = await fetch('/api/youtube?channel='+encodeURIComponent(GPSPACE_CHANNEL_ID)+'&refresh='+Date.now(), {cache:'no-store', headers:{'cache-control':'no-cache'}});
+    const response = await fetch('/api/youtube?refresh='+Date.now(), {cache:'no-store', headers:{'cache-control':'no-cache, no-store'}});
     if(!response.ok) throw new Error('feed');
     const data = await response.json();
     if(!Array.isArray(data.videos)||!data.videos.length) throw new Error('empty');

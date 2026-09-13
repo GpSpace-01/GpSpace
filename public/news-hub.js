@@ -103,7 +103,7 @@ async function loadNews(){
   newsGrid.innerHTML='<div class="news-loading">Loading the latest space & science headlines…</div>';
   if(newsStatus)newsStatus.textContent='Updating…';
   try{
-    const response=await fetch('/api/news',{cache:'no-store'});
+    const response=await fetch('/api/news?refresh='+Date.now(),{cache:'no-store',headers:{'cache-control':'no-cache, no-store'}});
     const data=await response.json();
     if(!response.ok||!data.ok)throw new Error('News feed unavailable');
     renderNews(data.news||[]);
