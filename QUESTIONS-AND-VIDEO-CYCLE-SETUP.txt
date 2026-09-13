@@ -1,0 +1,47 @@
+GPSPACE V12.3 — 70 VIDEO + 50 QUESTION ROLLING CYCLES
+
+WHAT THIS VERSION DOES
+1. YouTube cycle: keeps exactly the newest 70 unique GpSpace video IDs in Cloudflare KV.
+   When a new upload is detected, it is inserted at the front and the oldest ID falls out.
+   The 70 IDs in public/video_ids.txt are used to seed the cycle the first time.
+2. News: keeps/serves the newest 10 news stories.
+3. Questions: visitors can use /questions.html to submit a question. The newest 50 questions
+   are retained. Question 51 pushes question 1 out of the cycle.
+4. Notifications: the Questions link shows a badge for unanswered questions. The private
+   /admin-questions.html page shows the unanswered count and can optionally use browser
+   notifications while it is open.
+5. Answers: the site owner answers from /admin-questions.html. Answers are stored with the
+   question and shown publicly on /questions.html.
+
+CLOUDFLARE SETUP (REQUIRED FOR PERSISTENT CYCLES)
+This project uses one Cloudflare KV namespace bound as GPSPACE_KV.
+
+A) Create a KV namespace in Cloudflare:
+   Workers & Pages -> KV -> Create namespace
+   Example name: GPSPACE_KV
+
+B) Copy the namespace ID into wrangler.jsonc where it says:
+   REPLACE_WITH_YOUR_KV_NAMESPACE_ID
+
+C) Set an admin secret:
+   Cloudflare dashboard -> Workers & Pages -> gpspace -> Settings -> Variables and Secrets
+   Add secret:
+   GPSPACE_ADMIN_TOKEN = a long random secret only you know
+
+D) Deploy:
+   npm install
+   npx wrangler deploy
+
+E) Open:
+   Public questions: /questions.html
+   Owner/admin inbox: /admin-questions.html
+
+SECURITY
+- Never put GPSPACE_ADMIN_TOKEN into public HTML or JavaScript.
+- The admin page asks for the token and stores it only in sessionStorage for that browser tab.
+- Public visitors can submit and read questions but cannot answer/delete them.
+
+NOTE ABOUT YOUTUBE
+YouTube RSS normally exposes only recent uploads. The KV cycle is therefore important:
+when the worker sees a new upload, it merges it into the stored 70-ID list and drops the oldest
+ID. The website does not delete the video from YouTube; it only rotates the website's stored ID list.
