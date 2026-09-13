@@ -65,7 +65,7 @@ async function youtubeFeed() {
       'user-agent': 'GpSpace/11.0 (+https://gpspace.gpspace-one.workers.dev)',
       'accept': 'application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8'
     },
-    cf: { cacheTtl: 600, cacheEverything: true }
+    cf: { cacheTtl: 0, cacheEverything: false }
   });
   if (!upstream.ok) throw new Error(`YouTube returned ${upstream.status}`);
   return parseFeed(await upstream.text(), 'GpSpace').slice(0, 15).map(v => ({
@@ -85,7 +85,7 @@ async function newsFeed() {
         'user-agent': 'GpSpace/11.0 (+https://gpspace.gpspace-one.workers.dev)',
         'accept': 'application/rss+xml,application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8'
       },
-      cf: { cacheTtl: 600, cacheEverything: true }
+      cf: { cacheTtl: 0, cacheEverything: false }
     });
     if (!response.ok) throw new Error(`${feed.source} returned ${response.status}`);
     return parseFeed(await response.text(), feed.source);
@@ -119,7 +119,7 @@ export default {
       try {
         const videos = await youtubeFeed();
         return json({
-          ok: true, version: '11', channelId: CHANNEL_ID,
+          ok: true, version: '12', channelId: CHANNEL_ID,
           channelUrl: 'https://www.youtube.com/@Gp_space',
           fetchedAt: new Date().toISOString(), videos
         });
@@ -136,9 +136,9 @@ export default {
           fetchedAt: new Date().toISOString(),
           sources: NEWS_FEEDS.map(f => f.source),
           news
-        }, 200, 300);
+        }, 200, 0);
       } catch (error) {
-        return json({ ok: false, version: '11', error: 'Unable to load news feeds' }, 502, 30);
+        return json({ ok: false, version: '12', error: 'Unable to load news feeds' }, 502, 30);
       }
     }
 
