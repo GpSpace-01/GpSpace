@@ -1,5 +1,5 @@
 const CHANNEL_ID = 'UCi8mXSRouesT1xVkf81wbzg';
-const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+const CHANNEL_URL = 'https://www.youtube.com/@Gp_space';
 
 const NEWS_FEEDS = [
   { source: 'NASA', url: 'https://www.nasa.gov/feed/' },
@@ -25,13 +25,13 @@ function stripHtml(value = '') {
 }
 
 function tag(block, name) {
-  const escaped = name.replace(':', '\\:');
-  const re = new RegExp(`<${escaped}(?:\\s[^>]*)?>([\\s\\S]*?)</${escaped}>`, 'i');
+  const escaped = name.replace(/:/g, '\\:');
+  const re = new RegExp(`<${escaped}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${escaped}>`, 'i');
   return xmlDecode((block.match(re) || [, ''])[1].trim());
 }
 
 function atomLink(block) {
-  const m = block.match(/<link\b[^>]*href=["']([^"']+)["'][^>]*\/?>/i);
+  const m = block.match(/<link\b[^>]*href=["']([^"']+)["'][^>]*\/?>(?:<\/link>)?/i);
   return m ? m[1] : '';
 }
 
@@ -47,64 +47,105 @@ function parseFeed(xml, source) {
   }).filter(n => n.title && n.link);
 }
 
-function json(data, status = 200, maxAge = 300) {
+function json(data, status = 200, noStore = false) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'cache-control': `public, max-age=${maxAge}, s-maxage=600`,
+      'cache-control': noStore ? 'no-store, no-cache, must-revalidate, max-age=0' : 'public, max-age=60, s-maxage=60',
       'access-control-allow-origin': '*',
-      'x-gpspace-api': 'v11'
+      'x-gpspace-api': 'v12-fixed'
     }
   });
 }
 
-async function youtubeFeed() {
-  const upstream = await fetch(FEED_URL, {
-    headers: {
-      'user-agent': 'GpSpace/11.0 (+https://gpspace.gpspace-one.workers.dev)',
-      'accept': 'application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8'
-    },
+function videoIdFromUrl(url = '') {
+  return (url.match(/[?&]v=([^&]+)/) || [, ''])[1];
+}
+
+async function fetchText(url, headers) {
+  const response = await fetch(url, {
+    headers,
     cf: { cacheTtl: 0, cacheEverything: false }
   });
-  if (!upstream.ok) throw new Error(`YouTube returned ${upstream.status}`);
-  return parseFeed(await upstream.text(), 'GpSpace').slice(0, 15).map(v => ({
-    id: (v.link.match(/\/watch\?v=([^&]+)/) || [, ''])[1],
-    title: v.title,
-    published: v.published,
-    updated: v.published,
-    channelTitle: 'GpSpace',
-    thumbnail: ''
+  if (!response.ok) throw new Error(`Upstream returned ${response.status}`);
+  return response.text();
+}
+
+async function youtubeRss() {
+  const bust = Date.now().toString();
+  const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}&_=${bust}`;
+  const xml = await fetchText(url, {
+    'user-agent': 'Mozilla/5.0 (compatible; GpSpaceBot/12.1)',
+    'accept': 'application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8',
+    'cache-control': 'no-cache'
+  });
+  const parsed = parseFeed(xml, 'GpSpace');
+  if (!parsed.length) throw new Error('YouTube RSS returned no videos');
+  return parsed.slice(0, 15).map(v => ({
+    id: videoIdFromUrl(v.link), title: v.title, published: v.published, updated: v.published,
+    channelTitle: 'GpSpace', thumbnail: `https://i.ytimg.com/vi/${videoIdFromUrl(v.link)}/hqdefault.jpg`
   })).filter(v => v.id);
+}
+
+function parseYouTubePage(html) {
+  const found = [];
+  const seen = new Set();
+  const rendererRe = /"videoRenderer"\s*:\s*\{([\s\S]*?)(?=,"videoRenderer"\s*:|,"continuationItemRenderer"\s*:|\}\s*\]\s*\}\s*\])/g;
+  let m;
+  while ((m = rendererRe.exec(html))) {
+    const block = m[1];
+    const id = (block.match(/"videoId"\s*:\s*"([\w-]{11})"/) || [, ''])[1];
+    const title = (block.match(/"title"\s*:\s*\{"runs"\s*:\s*\[\s*\{"text"\s*:\s*"((?:\\.|[^"\\])*)"/) || [, ''])[1];
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    let decodedTitle = title || '';
+    try { decodedTitle = JSON.parse('"' + decodedTitle + '"'); } catch {}
+    found.push({ id, title: decodedTitle || 'GpSpace Space Video', published: '', updated: '', channelTitle: 'GpSpace', thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` });
+    if (found.length >= 15) break;
+  }
+  return found;
+}
+
+async function youtubePage() {
+  const bust = Date.now().toString();
+  const html = await fetchText(`${CHANNEL_URL}/videos?sort=dd&view=0&_=${bust}`, {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'cache-control': 'no-cache'
+  });
+  const videos = parseYouTubePage(html);
+  if (!videos.length) throw new Error('YouTube channel page returned no videos');
+  return videos;
+}
+
+async function youtubeFeed() {
+  try { return await youtubeRss(); } catch (rssError) {
+    try { return await youtubePage(); } catch (pageError) {
+      throw new Error(`YouTube unavailable: RSS=${rssError.message}; PAGE=${pageError.message}`);
+    }
+  }
 }
 
 async function newsFeed() {
   const results = await Promise.allSettled(NEWS_FEEDS.map(async feed => {
-    const response = await fetch(feed.url, {
-      headers: {
-        'user-agent': 'GpSpace/11.0 (+https://gpspace.gpspace-one.workers.dev)',
-        'accept': 'application/rss+xml,application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8'
-      },
-      cf: { cacheTtl: 0, cacheEverything: false }
+    const bust = `${feed.url}${feed.url.includes('?') ? '&' : '?'}_=${Date.now()}`;
+    const xml = await fetchText(bust, {
+      'user-agent': 'Mozilla/5.0 (compatible; GpSpaceBot/12.1)',
+      'accept': 'application/rss+xml,application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8',
+      'cache-control': 'no-cache'
     });
-    if (!response.ok) throw new Error(`${feed.source} returned ${response.status}`);
-    return parseFeed(await response.text(), feed.source);
+    return parseFeed(xml, feed.source);
   }));
 
   const items = results.flatMap(r => r.status === 'fulfilled' ? r.value : []);
   const seen = new Set();
-  return items
-    .filter(item => {
-      const key = item.link || item.title;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-    .sort((a, b) => {
-      const da = Date.parse(a.published) || 0, db = Date.parse(b.published) || 0;
-      return db - da;
-    })
-    .slice(0, 24);
+  return items.filter(item => {
+    const key = item.link || item.title;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).sort((a, b) => (Date.parse(b.published) || 0) - (Date.parse(a.published) || 0)).slice(0, 24);
 }
 
 export default {
@@ -112,33 +153,24 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === '/api/health') {
-      return json({ ok: true, service: 'GpSpace API', version: '11', time: new Date().toISOString() }, 200, 60);
+      return json({ ok: true, service: 'GpSpace API', version: '12.1', time: new Date().toISOString() }, 200, true);
     }
 
     if (url.pathname === '/api/youtube') {
       try {
         const videos = await youtubeFeed();
-        return json({
-          ok: true, version: '12', channelId: CHANNEL_ID,
-          channelUrl: 'https://www.youtube.com/@Gp_space',
-          fetchedAt: new Date().toISOString(), videos
-        });
+        return json({ ok: true, version: '12.1', channelId: CHANNEL_ID, channelUrl: 'https://www.youtube.com/@Gp_space', fetchedAt: new Date().toISOString(), videos }, 200, true);
       } catch (error) {
-        return json({ ok: false, version: '11', error: 'Unable to load YouTube feed' }, 502, 30);
+        return json({ ok: false, version: '12.1', error: 'Unable to load YouTube feed', detail: error.message }, 502, true);
       }
     }
 
     if (url.pathname === '/api/news') {
       try {
         const news = await newsFeed();
-        return json({
-          ok: true, version: '11',
-          fetchedAt: new Date().toISOString(),
-          sources: NEWS_FEEDS.map(f => f.source),
-          news
-        }, 200, 0);
+        return json({ ok: true, version: '12.1', fetchedAt: new Date().toISOString(), sources: NEWS_FEEDS.map(f => f.source), news }, 200, true);
       } catch (error) {
-        return json({ ok: false, version: '12', error: 'Unable to load news feeds' }, 502, 30);
+        return json({ ok: false, version: '12.1', error: 'Unable to load news feeds', detail: error.message }, 502, true);
       }
     }
 
