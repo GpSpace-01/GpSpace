@@ -21,7 +21,7 @@ A) Create a KV namespace in Cloudflare:
    Example name: GPSPACE_KV
 
 B) Copy the namespace ID into wrangler.jsonc where it says:
-   REPLACE_WITH_YOUR_KV_NAMESPACE_ID
+   29399307e9004f5899c63d515fd1ae23
 
 C) Set an admin secret:
    Cloudflare dashboard -> Workers & Pages -> gpspace -> Settings -> Variables and Secrets
