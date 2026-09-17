@@ -4,7 +4,7 @@
   "main": "./worker.js",
   "compatibility_date": "2026-09-05",
   "kv_namespaces": [
-    { "binding": "GPSPACE_KV", "id": "29399307e9004f5899c63d515fd1ae23" }
+    { "binding": "GPSPACE_KV", "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID" }
   ],
   "assets": {
     "directory": "./public",
