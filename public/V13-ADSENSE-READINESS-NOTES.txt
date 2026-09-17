@@ -1,0 +1,15 @@
+GpSpace V13 — AdSense-readiness update
+
+Changes in V13:
+- Added original editorial/trust content to the homepage.
+- Added a dedicated Editorial Policy page covering original content, sourcing, corrections, external news feeds, videos and community moderation.
+- Expanded the About page with purpose, sourcing and correction practices.
+- Strengthened the Videos page with original explanatory context so it is not only a video directory.
+- Added a substantial Roman Space Telescope GpSpace guide.
+- Added a dedicated Roman Space Telescope watch page with embedded YouTube video, original context, source links and VideoObject structured data.
+- Added the new pages to sitemap.xml.
+- Added an explicit sitemap directive to robots.txt.
+- Removed empty ADVERTISEMENT placeholder boxes before AdSense approval. Actual AdSense units should be added only after Google approves the site and the ad configuration is completed.
+- Preserved the existing 70-video and 50-question rolling-cycle architecture and Cloudflare Worker/KV setup.
+
+Important: V13 is a policy-oriented pre-review build, not a guarantee of AdSense approval. Google makes the final approval decision after reviewing the live site.

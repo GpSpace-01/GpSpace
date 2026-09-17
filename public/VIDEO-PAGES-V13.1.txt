@@ -1,0 +1,11 @@
+GpSpace V13.1 video-page system
+
+Every GpSpace YouTube upload now gets an indexable dedicated page automatically:
+https://gpspace.site/videos/watch/VIDEO_ID
+
+A companion guide route is also available:
+https://gpspace.site/stories/video/VIDEO_ID
+
+The Cloudflare Worker fetches the YouTube title at request time, creates a VideoObject JSON-LD block, embeds the video, and adds original GpSpace context. The sitemap route dynamically includes the current rolling video cycle plus the pinned historical videos supplied for this release.
+
+No manual page creation is required for future uploads. The Videos hub links each video to its dedicated page.

@@ -1,0 +1,10 @@
+GpSpace V13.1 validation notes
+
+- Dedicated video page route: /videos/watch/{11-character YouTube ID}
+- Companion guide route: /stories/video/{11-character YouTube ID}
+- Dynamic /sitemap.xml includes current rolling video cycle and pinned video guides.
+- Video cards link directly to indexable dedicated pages.
+- Server-rendered pages include VideoObject JSON-LD, canonical URL, Open Graph metadata, thumbnail, embedded YouTube video and original GpSpace context.
+- Existing 70-video and 50-question rolling KV architecture is preserved.
+- Requested historical videos are pinned in the dynamic sitemap so their pages remain discoverable even if they age out of the 70-video display cycle.
+- worker.js and public/video-hub.js pass Node syntax checks.
