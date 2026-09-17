@@ -1,3 +1,5 @@
+GpSpace V13 — AdSense-readiness build
+
 GpSpace V7 — Automatic YouTube Video Hub (Cloudflare Workers Static Assets fix)
 
 This version keeps the V6 site/content and fixes the deployment architecture for a Cloudflare Workers project using Static Assets.
