@@ -1,0 +1,20 @@
+GpSpace V14 — AdSense-focused publication build
+
+Purpose
+- Make original written explainers the primary public content.
+- Remove unfinished/dynamic surfaces from the main navigation and sitemap.
+- Reduce dependence on automatically generated external feeds for indexable content.
+- Keep the YouTube channel as supplementary media rather than the core of the website.
+
+Changes
+- Rebuilt homepage news area as a static research/sources section using NASA, ESA and JPL links.
+- Rebuilt videos.html as a static, text-rich Video Guides page.
+- Removed Live News and Questions from public navigation and sitemap.
+- Legacy live-news.html and questions.html are noindex and retained only as temporary status pages.
+- Added editorial transparency to About and Editorial Policy.
+- Added GpSpace Editorial Team / maintenance context and further-reading links to story pages.
+- Updated sitemap to include only substantive indexable pages.
+- Kept robots.txt crawlable and pointed at sitemap.xml.
+
+Important
+This build is designed to address common AdSense quality/crawling concerns but cannot guarantee approval. Before applying, deploy it, test every URL, verify Search Console indexing, add your real AdSense publisher ID to ads.txt only after Google provides it, and request review only after the live site is stable.
