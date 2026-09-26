@@ -1,0 +1,10 @@
+GpSpace V14 — Featured Video
+
+The fixed featured video is:
+https://www.youtube.com/watch?v=qFpLfc5x13E
+
+Title:
+The Ultimate Space Journey 🚀 | 60+ minutes of Space Mysteries
+
+The homepage and Video Guides page use this video as their featured player.
+The video-hub JavaScript also forces the same ID after any YouTube feed refresh, so the featured player does not change automatically.

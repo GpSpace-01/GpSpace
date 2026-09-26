@@ -1,5 +1,7 @@
 const GPSPACE_CHANNEL_ID = 'UCi8mXSRouesT1xVkf81wbzg';
 const GPSPACE_CHANNEL_URL = 'https://www.youtube.com/@Gp_space';
+const GPSPACE_FEATURED_VIDEO_ID = 'qFpLfc5x13E';
+const GPSPACE_FEATURED_VIDEO_TITLE = 'The Ultimate Space Journey 🚀 | 60+ minutes of Space Mysteries';
 
 // Existing videos are kept as a fallback so the hub still works if YouTube's feed is temporarily unavailable.
 const GPSPACE_VIDEOS = [
@@ -43,7 +45,7 @@ async function loadAutomaticFeed(){
     const unique=[...new Set(GPSPACE_VIDEOS)];
     records=await Promise.all(unique.map(async id=>{const title=await getTitle(id);return {id,title,type:typeFor(id),categories:categoriesFor(title),automatic:false}}));
   }
-  if(records[0]){featuredTitle.textContent=records[0].title;featuredYoutube.href='https://www.youtube.com/watch?v='+records[0].id;player.src='https://www.youtube.com/embed/'+records[0].id+'?rel=0'}
+  featuredTitle.textContent=GPSPACE_FEATURED_VIDEO_TITLE;featuredYoutube.href='https://www.youtube.com/watch?v='+GPSPACE_FEATURED_VIDEO_ID;player.src='https://www.youtube.com/embed/'+GPSPACE_FEATURED_VIDEO_ID+'?rel=0'
   render();
   document.querySelectorAll('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(btn.dataset.filter)}));
 })();
